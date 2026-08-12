@@ -1,0 +1,24 @@
+node_modules/
+session/
+*.log
+.env
+database/users/
+database/clients/
+core
+
+# Backups e versões antigas
+*.backup.*
+*.before-*
+*.aula8.backup.*
+*.erro.*
+
+# Arquivos temporários/acidentais
+*.js.
+*.sj..
+*.sj...
+
+# Arquivos antigos/temporários específicos
+lib/connection/whatsapp.j
+lib/connection/whatsapp.owner-backup.js
+lib/connection/whatsapp.sj..^X
+lib/users/userManager.owner-backup.js
