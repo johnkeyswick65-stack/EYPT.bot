@@ -1,9 +1,20 @@
+import { success } from '../../lib/utils/reply.js'
+
 export default {
   name: 'ping',
 
-  async execute(sock, message) {
-    await sock.sendMessage(message.key.remoteJid, {
-      text: '🏓 Pong!\n\n🤖 EYPT.bot está online!'
-    })
+  aliases: ['p'],
+
+  async execute(sock, message, args) {
+    const start = Date.now()
+
+    await success(
+      sock,
+      message,
+      `🏓 *PONG!*
+
+🤖 EYPT.bot está online!
+⚡ Latência: ${Date.now() - start} ms`
+    )
   }
 }

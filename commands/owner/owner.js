@@ -1,52 +1,48 @@
-import { getUser } from '../../lib/users/userManager.js'
-import { OWNER_ID } from '../../config.js'
+import { ownerReply } from '../../lib/utils/reply.js'
 
 export default {
   name: 'owner',
 
+  aliases: ['dono'],
+
+  permission: 'owner',
+
   async execute(sock, message) {
-    const jid = message.key.remoteJid
-    const user = getUser(jid)
+    const menu = `👑 *PAINEL DO OWNER*
 
-    if (!user || user.type !== 'owner' || jid !== OWNER_ID) {
-      await sock.sendMessage(jid, {
-        text: '🚫 Acesso negado.\n\nEste painel é exclusivo do Owner do EYPT.bot.'
-      })
-      return
-    }
+━━━━━━━━━━━━━━━━━━━━
 
-    const menu = `╭━━━〔 👑 EYPT.bot OWNER 〕━━━╮
-┃
-┃ 👤 *ADMINISTRAÇÃO*
-┃ ├ .users
-┃
-┃ 💼 *NEGÓCIOS*
-┃ ├ .empresa
-┃ ├ .clientes
-┃ ├ .vendas
-┃ ├ .relatorios
-┃ ├ .analise
-┃ └ .painel
-┃
-┃ 📊 *SISTEMA*
-┃ ├ .stats
-┃ ├ .status
-┃ ├ .runtime
-┃ └ .version
-┃
-┃ 🧩 *COMANDOS*
-┃ ├ .addcomando
-┃ ├ .remcomando
-┃ └ .listacomandos
-┃
-╰━━━━━━━━━━━━━━━━━━━━╯
+👤 *ADMINISTRAÇÃO*
+├ .users
 
-━━━━━━━━━━━━━━━━
-👑 EYPT.bot Owner
-🔐 Painel restrito`
+💼 *NEGÓCIOS*
+├ .empresa
+├ .clientes
+├ .vendas
+├ .relatorios
+├ .analise
+└ .painel
 
-    await sock.sendMessage(jid, {
-      text: menu
-    })
+📊 *SISTEMA*
+├ .stats
+├ .status
+├ .runtime
+└ .version
+
+🧩 *COMANDOS*
+├ .addcomando
+├ .remcomando
+└ .listacomandos
+
+━━━━━━━━━━━━━━━━━━━━
+
+🔐 Acesso exclusivo do Owner
+🤖 EYPT.bot`
+
+    await ownerReply(
+      sock,
+      message,
+      menu
+    )
   }
 }

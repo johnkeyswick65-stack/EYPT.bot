@@ -1,5 +1,6 @@
 export default {
   name: 'botadmin',
+  permission: 'admin',
 
   async execute(sock, message) {
     const jid = message.key.remoteJid

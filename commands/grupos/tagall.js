@@ -1,5 +1,7 @@
 export default {
   name: 'tagall',
+  aliases: ['marcar', 'todos'],
+  permission: 'admin',
 
   async execute(sock, message) {
     const jid = message.key.remoteJid
