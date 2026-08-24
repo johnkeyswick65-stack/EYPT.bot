@@ -30,3 +30,13 @@ lib/users/userManager.owner-backup.js
 *.mp3
 *-player-script.js
 downloads/
+
+# Backups e arquivos temporários
+*.backup
+*.backup-*
+*.bak
+*.bak*
+*.test-backup
+*.debug-backup
+index.jsxx
+brain.py
