@@ -10,34 +10,18 @@ export default {
       })
     }
 
-    const menu = `╭━━━〔 👥 EYPT.bot 〕━━━╮
-┃
-┃       🛡️ *CENTRAL DE GRUPOS*
-┃
-┃ ⚙️ *ADMINISTRAÇÃO*
-┃ ├ .admins
-┃ ├ .botadmin
-┃ ├ .isadmin
-┃ ├ .promote @membro
-┃ ├ .demote @admin
-┃ └ .kick @membro
-┃
-┃ 👥 *MEMBROS*
-┃ ├ .members
-┃ ├ .groupinfo
-┃ └ .tagall
-┃
-┃ 🤖 *AUTOMAÇÃO*
-┃ └ .welcome
-┃
-┃ 💡 *DICA*
-┃ Use os comandos de administração
-┃ somente quando o EYPT.bot tiver
-┃ privilégios de administrador.
-┃
-╰━━━━━━━━━━━━━━━━━━━━╯
-     ⚡ *EYPT.bot GROUP SYSTEM*
-     🔐 Controle • Gestão • Automação`
+    const menu = `╭───⊱❀⊰ 𝔾ℝ𝕌ℙ𝕆𝕊 ⊱❀⊰
+│
+├── 🍁 𝙜𝙧𝙤𝙪𝙥𝙞𝙣𝙛𝙤
+├── 🍁 𝙢𝙚𝙢𝙗𝙚𝙧𝙨
+├── 🍁 𝙖𝙙𝙢𝙞𝙣𝙨
+├── 🍁 𝙞𝙨𝙖𝙙𝙢𝙞𝙣
+├── 🍁 𝙗𝙤𝙩𝙖𝙙𝙢𝙞𝙣
+├── 🍁 𝙥𝙧𝙤𝙢𝙤𝙩𝙚
+├── 🍁 𝙙𝙚𝙢𝙤𝙩𝙚
+├── 🍁 𝙠𝙞𝙘𝙠
+├── 🍁 𝙩𝙖𝙜𝙖𝙡𝙡
+╰── 🍁 𝙬𝙚𝙡𝙘𝙤𝙢𝙚`
 
     await sock.sendMessage(jid, {
       text: menu

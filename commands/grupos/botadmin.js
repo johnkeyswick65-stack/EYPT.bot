@@ -1,3 +1,5 @@
+import { isBotAdmin } from '../../lib/utils/permissions.js'
+
 export default {
   name: 'botadmin',
   permission: 'admin',
@@ -13,24 +15,19 @@ export default {
     }
 
     try {
-      const metadata = await sock.groupMetadata(jid)
+      const admin = await isBotAdmin(sock, jid)
 
-      const botId = sock.user?.id?.split(':')[0]
-
-      const bot = metadata.participants.find(member => {
-        const memberId = member.id?.split(':')[0]
-        return memberId === botId
-      })
-
-      const isAdmin =
-        bot?.admin === 'admin' ||
-        bot?.admin === 'superadmin'
-
-      await sock.sendMessage(jid, {
-        text: isAdmin
-          ? '🤖👑 *EYPT.bot é administrador deste grupo.*'
-          : '🤖⚠️ *EYPT.bot não é administrador deste grupo.*\n\nDê administrador ao bot para utilizar funções de gerenciamento.'
-      })
+      await sock.sendMessage(
+        jid,
+        {
+          text: admin
+            ? `🤖👑 *EYPT.bot é administrador deste grupo.*\n\n✅ O bot pode utilizar funções de gerenciamento.`
+            : `🤖⚠️ *EYPT.bot não é administrador deste grupo.*\n\nDê administrador ao bot para utilizar funções de gerenciamento.`
+        },
+        {
+          quoted: message
+        }
+      )
     } catch (error) {
       console.error('❌ Erro no .botadmin:', error)
 

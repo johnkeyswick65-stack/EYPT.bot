@@ -50,9 +50,12 @@ Exemplo:
       })
     }
 
-    const botId = sock.user?.id
+    const botIds = [
+      sock.user?.id,
+      sock.user?.lid
+    ].filter(Boolean)
 
-    if (isSameUser(target, botId)) {
+    if (botIds.some(botId => isSameUser(target, botId))) {
       return sock.sendMessage(jid, {
         text: '🤖 Não posso remover meus próprios privilégios de administrador.'
       })
@@ -83,16 +86,22 @@ Exemplo:
 
       const number = getTargetNumber(member.id)
 
-      await sock.sendMessage(jid, {
-        text: `╭━━━〔 🛡️ EYPT.bot 〕━━━╮
+      await sock.sendMessage(
+        jid,
+        {
+          text: `╭━━━〔 🛡️ EYPT.bot 〕━━━╮
 ┃
 ┃ ✅ *ADMIN REBAIXADO*
 ┃
 ┃ 👤 @${number}
 ┃
 ╰━━━━━━━━━━━━━━━━━━━━╯`,
-        mentions: [member.id]
-      })
+          mentions: [member.id]
+        },
+        {
+          quoted: message
+        }
+      )
     } catch (error) {
       console.error('❌ Erro no .demote:', error)
 

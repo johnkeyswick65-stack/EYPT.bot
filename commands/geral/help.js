@@ -23,31 +23,23 @@ export default {
 
       if (!command) {
         return sock.sendMessage(jid, {
-          text: `╭━━━〔 ❓ EYPT.bot HELP 〕━━━╮
-┃
-┃ ❌ *Comando não encontrado*
-┃
-┃ Você pesquisou:
-┃ • .${requested}
-┃
-┃ 💡 Use *.help* para ver todos
-┃ os comandos disponíveis.
-┃
-╰━━━━━━━━━━━━━━━━━━━━━━╯`
+          text: `╭───⊱❀⊰ 𝔼𝕐ℙ𝕋.𝔹𝕆𝕋 ⊱❀⊰
+│
+├── 🍁 *COMANDO NÃO ENCONTRADO*
+│
+├── 🍁 Você digitou:
+├── 🍁 .${requested}
+│
+╰── 🍁 Use .help para consultar os comandos`
         })
       }
 
       const aliases =
-        Array.isArray(command.aliases) &&
-        command.aliases.length
-          ? command.aliases
-              .map(alias => `.${alias}`)
-              .join(', ')
+        Array.isArray(command.aliases) && command.aliases.length
+          ? command.aliases.map(alias => `.${alias}`).join(', ')
           : 'Nenhum'
 
-      const permission =
-        command.permission || 'user'
-
+      const permission = command.permission || 'user'
       const description =
         command.description ||
         'Este comando não possui uma descrição definida.'
@@ -57,41 +49,38 @@ export default {
         `.${command.name}`
 
       return sock.sendMessage(jid, {
-        text: `╭━━━〔 📚 EYPT.bot HELP 〕━━━╮
-┃
-┃ 📌 *COMANDO*
-┃ └ .${command.name}
-┃
-┃ 📂 *CATEGORIA*
-┃ └ ${command.category || 'geral'}
-┃
-┃ 🔐 *PERMISSÃO*
-┃ └ ${permission}
-┃
-┃ 📖 *DESCRIÇÃO*
-┃ └ ${description}
-┃
-┃ ⚙️ *USO*
-┃ └ ${usage}
-┃
-┃ 🔗 *ALIASES*
-┃ └ ${aliases}
-┃
-╰━━━━━━━━━━━━━━━━━━━━━━╯
-🤖 EYPT.bot
-© EYPT.bot`
+        text: `╭───⊱❀⊰ 𝕀ℕ𝔽𝕆ℝ𝕄𝔸ℂ̧𝔸̃𝕆 ⊱❀⊰
+│
+├── 🍁 𝘾𝙊𝙈𝘼𝙉𝘿𝙊
+├── 🍁 .${command.name}
+│
+├── 🍁 𝘾𝘼𝙏𝙀𝙂𝙊𝙍𝙄𝘼
+├── 🍁 ${command.category || 'geral'}
+│
+├── 🍁 𝙋𝙀𝙍𝙈𝙄𝙎𝙎𝘼̃𝙊
+├── 🍁 ${permission}
+│
+├── 🍁 𝘿𝙀𝙎𝘾𝙍𝙄𝘾̧𝘼̃𝙊
+├── 🍁 ${description}
+│
+├── 🍁 𝙐𝙎𝙊
+├── 🍁 ${usage}
+│
+├── 🍁 𝘼𝙇𝙄𝘼𝙎𝙀𝙎
+╰── 🍁 ${aliases}
+
+©ᴇʏᴘᴛ.ʙᴏᴛ`
       })
     }
 
     // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    // LISTA GERAL
+    // ORGANIZAR CATEGORIAS
     // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
     const categorias = {}
 
     for (const [name, command] of commands) {
-      const categoria =
-        command.category || 'geral'
+      const categoria = command.category || 'geral'
 
       if (!categorias[categoria]) {
         categorias[categoria] = []
@@ -100,20 +89,24 @@ export default {
       categorias[categoria].push(name)
     }
 
-    let menu = `╭━━━〔 📚 EYPT.bot 〕━━━╮
-┃
-┃ 🤖 *CENTRAL DE COMANDOS*
-┃
-┃ 📦 Total: *${commands.size} comandos*
-┃
-┃ 💡 Para detalhes:
-┃ └ *.help nome*
-┃`
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    // MENU HELP
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    let menu = `𝕄𝔼ℕ𝕌 𝔼𝕐ℙ𝕋.𝔹𝕆𝕋
+
+𝐁𝐞𝐦-𝐯𝐢𝐧𝐝𝐨 𝐚𝐨 𝐄𝐘𝐏𝐓.𝐛𝐨𝐭
+`
 
     for (const categoria of Object.keys(categorias).sort()) {
-      menu += `\n┃\n┃ 📂 *${categoria.toUpperCase()}*\n`
+      menu += `
+╭───⊱❀⊰ ${categoria.toUpperCase()} ⊱❀⊰
+│
+`
 
-      for (const name of categorias[categoria].sort()) {
+      const lista = categorias[categoria].sort()
+
+      lista.forEach((name, index) => {
         const command = commands.get(name)
 
         const icon =
@@ -121,24 +114,19 @@ export default {
             ? '👑'
             : command.permission === 'admin'
               ? '🛡️'
-              : command.permission === 'botadmin'
-                ? '🤖'
-                : '└'
+              : '🍁'
 
-        menu += `┃ ${icon} .${name}\n`
-      }
+        const prefix = index === lista.length - 1
+          ? '╰──'
+          : '├──'
+
+        menu += `${prefix} ${icon} .${name}
+`
+      })
     }
 
     menu += `
-┃
-┃ 🔎 Exemplo:
-┃ *.help kick*
-┃
-┃ 🏠 *.menu* — Menu principal
-┃
-╰━━━━━━━━━━━━━━━━━━━━━━╯
-🤖 *EYPT.bot*
-© EYPT.bot`
+©ᴇʏᴘᴛ.ʙᴏᴛ`
 
     await sock.sendMessage(jid, {
       text: menu

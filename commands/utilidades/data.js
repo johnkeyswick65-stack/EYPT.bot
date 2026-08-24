@@ -1,3 +1,5 @@
+import { info } from '../../lib/utils/reply.js'
+
 export default {
   name: 'data',
 
@@ -12,12 +14,14 @@ export default {
       timeZone: 'Africa/Maputo'
     })
 
-    await sock.sendMessage(message.key.remoteJid, {
-      text: `📅 *DATA DE HOJE*
+    await info(
+      sock,
+      message,
+      `📅 *DATA DE HOJE*
 
 🇲🇿 ${data}
 
 🤖 EYPT.bot`
-    })
+    )
   }
 }

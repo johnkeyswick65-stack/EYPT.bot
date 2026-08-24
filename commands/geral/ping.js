@@ -1,20 +1,18 @@
-import { success } from '../../lib/utils/reply.js'
+import { formatMenu } from '../../lib/utils/watermark.js';
 
 export default {
   name: 'ping',
-
-  aliases: ['p'],
-
+  description: 'Verifica se o bot está online',
+  permission: 'user',
+  aliases: ['pong', 'latencia'],
+  
   async execute(sock, message, args) {
-    const start = Date.now()
-
-    await success(
-      sock,
-      message,
-      `🏓 *PONG!*
-
-🤖 EYPT.bot está online!
-⚡ Latência: ${Date.now() - start} ms`
-    )
+    const jid = message.key.remoteJid;
+    const start = Date.now();
+    
+    const content = `🏓 *Pong!*\n┃\n⏱️ Latência: ${Date.now() - start}ms`;
+    const fullMessage = formatMenu(content, 'EYPT.bot');
+    
+    await sock.sendMessage(jid, { text: fullMessage });
   }
-}
+};

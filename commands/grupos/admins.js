@@ -1,3 +1,8 @@
+import {
+  areJidsSameUser,
+  jidNormalizedUser
+} from '@whiskeysockets/baileys'
+
 export default {
   name: 'admins',
 
@@ -15,7 +20,9 @@ export default {
       const metadata = await sock.groupMetadata(jid)
 
       const admins = metadata.participants.filter(
-        p => p.admin === 'admin' || p.admin === 'superadmin'
+        p =>
+          p.admin === 'admin' ||
+          p.admin === 'superadmin'
       )
 
       if (!admins.length) {
@@ -25,11 +32,15 @@ export default {
         return
       }
 
-      const mentions = admins.map(admin => admin.id)
+      const mentions = admins
+        .map(admin => admin.id)
+        .filter(Boolean)
 
       const lista = admins
         .map((admin, index) => {
-          const numero = admin.id.split('@')[0]
+          const normalized = jidNormalizedUser(admin.id)
+          const numero = normalized.split('@')[0]
+
           const tipo =
             admin.admin === 'superadmin'
               ? '👑 Dono'
@@ -39,14 +50,20 @@ export default {
         })
         .join('\n')
 
-      await sock.sendMessage(jid, {
-        text: `╭━━━〔 👑 ADMINISTRADORES 〕━━━╮
+      await sock.sendMessage(
+        jid,
+        {
+          text: `╭━━━〔 👑 ADMINISTRADORES 〕━━━╮
 ┃
 ${lista}
 ┃
 ╰━━━━━━━━━━━━━━━━━━━━╯`,
-        mentions
-      })
+          mentions
+        },
+        {
+          quoted: message
+        }
+      )
     } catch (error) {
       console.error('❌ Erro no .admins:', error)
 

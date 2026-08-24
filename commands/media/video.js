@@ -1,3 +1,7 @@
+import fs from 'fs'
+import { downloadVideo } from '../../lib/download/downloadManager.js'
+import { addWatermark } from '../../lib/utils/watermark.js'
+
 export default {
   name: 'video',
 
@@ -13,10 +17,14 @@ export default {
 
     if (!url) {
       await sock.sendMessage(jid, {
-        text: '🎬 Use:\n\n.video <link do vídeo>'
+        text: addWatermark(
+          '🎬 Use:\n\n.video <link do vídeo>'
+        )
       })
       return
     }
+
+    let filePath = null
 
     try {
       const parsed = new URL(url)
@@ -25,42 +33,56 @@ export default {
         throw new Error('URL inválida')
       }
 
-      const response = await fetch(url)
+      console.log(`🎬 EYPT.bot: baixando vídeo ${url}`)
 
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`)
+      const result = await downloadVideo(url)
+      filePath = result.path
+
+      if (!fs.existsSync(filePath)) {
+        throw new Error('Arquivo de vídeo não encontrado')
       }
 
-      const type = response.headers.get('content-type') || ''
+      const stats = fs.statSync(filePath)
+      const maxSize = 50 * 1024 * 1024
 
-      if (!type.startsWith('video/')) {
-        throw new Error('O link não parece ser um vídeo direto')
+      if (stats.size > maxSize) {
+        throw new Error('Vídeo demasiado grande para enviar')
       }
 
-      const length = Number(
-        response.headers.get('content-length') || 0
-      )
-
-      if (length > 50 * 1024 * 1024) {
-        throw new Error('Vídeo demasiado grande')
-      }
-
-      const buffer = Buffer.from(await response.arrayBuffer())
-
-      if (buffer.length > 50 * 1024 * 1024) {
-        throw new Error('Vídeo demasiado grande')
-      }
+      console.log(`📤 Enviando vídeo: ${result.filename}`)
 
       await sock.sendMessage(jid, {
-        video: buffer,
-        caption: '🎬 Vídeo enviado pelo EYPT.bot'
+        video: fs.readFileSync(filePath),
+        mimetype: 'video/mp4',
+        caption: addWatermark(
+          `🎬 ${result.title || 'Vídeo'}`
+        )
       })
+
+      console.log('✅ Vídeo enviado com sucesso')
+
     } catch (error) {
       console.error('❌ Erro no .video:', error)
 
       await sock.sendMessage(jid, {
-        text: '❌ Não consegui obter esse vídeo. Use um link público que aponte diretamente para um ficheiro de vídeo.'
+        text: addWatermark(
+          '❌ Não consegui baixar esse vídeo.\n\n' +
+          'Verifique se o link é público e tente novamente.'
+        )
       })
+
+    } finally {
+      if (filePath && fs.existsSync(filePath)) {
+        try {
+          fs.unlinkSync(filePath)
+          console.log(`🗑️ Arquivo temporário removido: ${filePath}`)
+        } catch (cleanupError) {
+          console.error(
+            '⚠️ Não consegui remover o arquivo temporário:',
+            cleanupError.message
+          )
+        }
+      }
     }
   }
 }

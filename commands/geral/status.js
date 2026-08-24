@@ -1,14 +1,24 @@
+import { formatMenu, addWatermark } from '../../lib/utils/watermark.js';
+
 export default {
   name: 'status',
-
-  async execute(sock, message) {
-    await sock.sendMessage(message.key.remoteJid, {
-      text: `📊 *STATUS DO EYPT.bot*
-
-🟢 Sistema: ONLINE
-🟢 WhatsApp: CONECTADO
-🟢 Comandos: ATIVOS
-🤖 Modo: MULTIFUNCIONAL`
-    })
+  description: 'Verifica o status do bot',
+  permission: 'user',
+  aliases: ['online'],
+  
+  async execute(sock, message, args) {
+    const jid = message.key.remoteJid;
+    
+    const content =
+      `🟢 *STATUS DO BOT*\n` +
+      `┃\n` +
+      `✅ *Conectado:* Sim\n` +
+      `⚡ *Comandos:* ${global.commandsCount || 'Carregados'}\n` +
+      `🧠 *IA:* Ativa\n` +
+      `📊 *Memória:* ${Math.round(process.memoryUsage().rss / 1024 / 1024)}MB\n` +
+      `🕐 *Hora:* ${new Date().toLocaleString('pt-BR')}`;
+    
+    const fullMessage = formatMenu(content, 'EYPT.bot');
+    await sock.sendMessage(jid, { text: fullMessage });
   }
-}
+};

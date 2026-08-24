@@ -22,3 +22,11 @@ lib/connection/whatsapp.j
 lib/connection/whatsapp.owner-backup.js
 lib/connection/whatsapp.sj..^X
 lib/users/userManager.owner-backup.js
+
+# Arquivos locais/temporarios
+*.part
+*.ytdl
+*.mp4
+*.mp3
+*-player-script.js
+downloads/

@@ -1,48 +1,48 @@
-import { ownerReply } from '../../lib/utils/reply.js'
-
 export default {
   name: 'owner',
-
-  aliases: ['dono'],
-
+  description: 'Menu completo do Owner EYPT.bot',
   permission: 'owner',
+  aliases: ['painelowner', 'adminpanel'],
+  
+  async execute(sock, message, args) {
+    const jid = message.key.remoteJid;
+    
+    const menu = 
+`╭───⊱❀⊰ 👑 OWNER EYPT.bot ⊱❀⊰
+┃
+📋 *PAINEL DO OWNER*
+┃
+🔹 *USUÁRIOS*
+├── .users - Gerenciar usuários
+├── .bloquear - Bloquear usuário
+├── .desbloquear - Desbloquear usuário
+└── .listablock - Ver bloqueados
+┃
+🔹 *WHITELIST*
+├── .addwhitelist - Adicionar à WL
+├── .removewhitelist - Remover da WL
+└── .listwhitelist - Ver WL
+┃
+🔹 *COMANDOS*
+├── .addcomando - Adicionar comando
+├── .remcomando - Remover comando
+└── .listacomandos - Listar comandos
+┃
+🔹 *SISTEMA*
+├── .reload - Recarregar comandos
+└── .owner - Este menu
+┃
+🔹 *MODERAÇÃO*
+├── .warn - Advertir
+├── .warnings - Ver advertências
+├── .clearwarn - Limpar advertências
+├── .mute - Silenciar grupo
+└── .unmute - Ativar grupo
+┃
+┃
+╰── 🍁 EYPT.bot
+©powered by EYPT tech.`;
 
-  async execute(sock, message) {
-    const menu = `👑 *PAINEL DO OWNER*
-
-━━━━━━━━━━━━━━━━━━━━
-
-👤 *ADMINISTRAÇÃO*
-├ .users
-
-💼 *NEGÓCIOS*
-├ .empresa
-├ .clientes
-├ .vendas
-├ .relatorios
-├ .analise
-└ .painel
-
-📊 *SISTEMA*
-├ .stats
-├ .status
-├ .runtime
-└ .version
-
-🧩 *COMANDOS*
-├ .addcomando
-├ .remcomando
-└ .listacomandos
-
-━━━━━━━━━━━━━━━━━━━━
-
-🔐 Acesso exclusivo do Owner
-🤖 EYPT.bot`
-
-    await ownerReply(
-      sock,
-      message,
-      menu
-    )
+    await sock.sendMessage(jid, { text: menu });
   }
-}
+};
