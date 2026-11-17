@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EYPT.bot — Painel de conexão</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">
+        <span class="material-symbols-rounded">smart_toy</span>
+      </div>
+      <div class="brand-text">
+        <h1>EYPT.bot</h1>
+        <p>Painel de conexão WhatsApp</p>
+      </div>
+    </div>
+
+    <div class="topbar-actions">
+      <div class="status-pill" id="status-pill" data-status="idle">
+        <span class="dot"></span>
+        <span id="status-label">A iniciar…</span>
+      </div>
+
+      <button class="btn ghost" id="btn-reconnect" type="button">
+        <span class="material-symbols-rounded">refresh</span>
+        Reconectar
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="card connect">
+      <div class="card-head">
+        <h2><span class="material-symbols-rounded">link</span> Ligação</h2>
+        <span class="hint" id="connect-hint">A ler o estado…</span>
+      </div>
+
+      <div class="connect-body">
+        <div class="qr-frame" id="qr-frame">
+          <img id="qr-image" alt="QR Code para ligar o WhatsApp" hidden />
+          <div class="qr-placeholder" id="qr-placeholder">
+            <span class="material-symbols-rounded">qr_code_scanner</span>
+            <p>O QR Code aparece aqui quando a sessão precisar de ser ligada.</p>
+          </div>
+        </div>
+
+        <div class="pairing">
+          <div class="divider"><span>ou ligue com um código</span></div>
+
+          <label class="field" for="phone">
+            <span class="material-symbols-rounded">phone_iphone</span>
+            <input
+              id="phone"
+              type="tel"
+              inputmode="numeric"
+              placeholder="258840000000"
+              autocomplete="off"
+            />
+          </label>
+
+          <button class="btn primary" id="btn-pair" type="button">
+            <span class="material-symbols-rounded">key</span>
+            Gerar código de emparelhamento
+          </button>
+
+          <div class="pairing-code" id="pairing-code" hidden>
+            <span class="pairing-label">Código de emparelhamento</span>
+            <div class="code-row">
+              <strong id="code-value">————</strong>
+              <button class="icon-btn" id="btn-copy" type="button" title="Copiar código">
+                <span class="material-symbols-rounded">content_copy</span>
+              </button>
+            </div>
+            <small>
+              WhatsApp → Dispositivos ligados → Ligar com número de telefone
+            </small>
+          </div>
+
+          <p class="connect-note">
+            <span class="material-symbols-rounded">info</span>
+            A sessão fica guardada na pasta <code>session/</code>. Só é preciso
+            ligar uma vez.
+          </p>
+        </div>
+      </div>
+
+      <p class="error-line" id="error-line" hidden></p>
+    </section>
+
+    <aside class="side">
+      <section class="card stats">
+        <div class="stat">
+          <span class="material-symbols-rounded">task_alt</span>
+          <div>
+            <small>Estado</small>
+            <strong id="stat-state">—</strong>
+          </div>
+        </div>
+
+        <div class="stat">
+          <span class="material-symbols-rounded">timer</span>
+          <div>
+            <small>Ligado há</small>
+            <strong id="stat-uptime">—</strong>
+          </div>
+        </div>
+
+        <div class="stat">
+          <span class="material-symbols-rounded">chat</span>
+          <div>
+            <small>Mensagens</small>
+            <strong id="stat-messages">0</strong>
+          </div>
+        </div>
+
+        <div class="stat">
+          <span class="material-symbols-rounded">terminal</span>
+          <div>
+            <small>Comandos usados</small>
+            <strong id="stat-commands">0</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="card session">
+        <div class="card-head">
+          <h2><span class="material-symbols-rounded">shield_person</span> Sessão</h2>
+        </div>
+
+        <ul class="rows">
+          <li>
+            <span class="material-symbols-rounded">folder_open</span>
+            <span class="row-label">Sessão guardada</span>
+            <span class="row-value" id="row-session">—</span>
+          </li>
+          <li>
+            <span class="material-symbols-rounded">widgets</span>
+            <span class="row-label">Comandos carregados</span>
+            <span class="row-value" id="row-commands">—</span>
+          </li>
+          <li>
+            <span class="material-symbols-rounded">psychology</span>
+            <span class="row-label">Inteligência artificial</span>
+            <span class="row-value" id="row-ai">—</span>
+          </li>
+          <li>
+            <span class="material-symbols-rounded">badge</span>
+            <span class="row-label">Número ligado</span>
+            <span class="row-value" id="row-phone">—</span>
+          </li>
+        </ul>
+
+        <button class="btn danger" id="btn-logout" type="button">
+          <span class="material-symbols-rounded">logout</span>
+          Terminar sessão
+        </button>
+      </section>
+    </aside>
+
+    <section class="card logs">
+      <div class="card-head">
+        <h2><span class="material-symbols-rounded">receipt_long</span> Atividade</h2>
+        <span class="badge" id="log-count">0</span>
+      </div>
+
+      <div class="log-list" id="logs">
+        <p class="log-empty">Sem atividade registada.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span class="material-symbols-rounded">bolt</span>
+    EYPT.bot · painel local de conexão
+  </footer>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
